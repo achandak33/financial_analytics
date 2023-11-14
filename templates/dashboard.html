@@ -1,0 +1,950 @@
+{% extends "base.html" %}
+{% block title %}  {% endblock title %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/index.css') }}" />
+{% endblock stylesheets %}
+{% block content %}
+<head>
+   <base href="/../" />
+   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+<style>
+   /* CSS styles for the auto-typing text */
+   #autoTypeText {
+   font-family: "Lato", sans-serif; /* Change the font-family */
+   color: #1338BE; /* Change the text color (blue in this example) */
+   font-size: 18px; /* Change the font size */
+   }
+</style>
+<style>
+   /* Custom CSS to align the button to the right */
+   .align-right {
+   text-align: right;
+   }
+</style>
+<style>
+   /* Increase the font size of the label */
+   .custom-label {
+   font-size: 16px; /* Adjust the font size as needed */
+   }
+</style>
+<style>
+   .page-container {
+   min-height: 100vh;
+   padding-left: 280px;
+   transition: all 0.2s ease;
+   }
+</style>
+<style>
+   .chart-container {
+   width: 80%;
+   margin: 0 auto;
+   }
+   .chart-bar {
+   width: 100%;
+   margin-bottom: 10px;
+   display: flex;
+   align-items: center;
+   }
+   .bar-label {
+   width: 20%;
+   text-align: left;
+   font-size: 10px;
+   color: #333;
+   }
+   .bar {
+   width: 80%;
+   background-color: #7287c9;
+   color: white;
+   display: flex;
+   align-items: center;
+   padding: 5px;
+   }
+</style>
+<!-- ### $App Screen Content ### -->
+<main class='main-content bgc-grey-100'>
+   <div id='mainContent'>
+   <div class="row gap-20 masonry pos-r">
+      <div class="masonry-sizer col-md-6 pos-a"></div>
+      <!-- Daily Returns -->
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Daily Returns of Stock 1</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="retChart" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Daily Returns of Stock 2</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="retChart2" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Daily Returns of Stock 3</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="retChart3" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Daily Returns of Stock 4</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="retChart4" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Daily Returns of Stock 5</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="retChart5" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Daily Returns of Portfolio</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="retChart6" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Cumulative Returns -->
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Cumulative Returns</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="cumChart" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Rolling stock 1 -->
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Returns of Stock 1 and Large Returns</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="rs1" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Rolling stock 2 -->
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Returns of Stock 2 and Large Returns</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="rs2" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Rolling stock 3 -->
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Returns of Stock 3 and Large Returns</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="rs3" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Rolling stock 4 -->
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Returns of Stock 4 and Large Returns</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="rs4" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Rolling stock 5 -->
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Returns of Stock 5 and Large Returns</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="rs5" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Rolling portfolio -->
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Returns of equal weighted Portfolio and Large Returns</h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="chart-container">
+                        <canvas id="rsp" width="800" height="200"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Regression Table -->
+      <div class="masonry-item col-md-12">
+         <div class="bgc-white p-20 bd">
+            <div class="container-fluid">
+               <h6 class="c-grey-900 mT-10 mB-30">Regression Analysis Results for each stock's returns against the Portfolio Returns </h6>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="bgc-white bd bdrs-3 p-20">
+                        <table class="table table-hover">
+                           <thead>
+                              <tr>
+                                 <th scope="col">Stock</th>
+                                 <th scope="col">Slope</th>
+                                 <th scope="col">Intercept</th>
+                                 <th scope="col">R squared</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {% for key,item in reg.items() %}
+                              <tr>
+                                 <td>{{ item.Stock }}</td>
+                                 <td>{{ item.Slope }}</td>
+                                 <td>{{ item.Intercept }}</td>
+                                 <td>{{ item.R }}</td>
+                              </tr>
+                              {% endfor %}
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock content %}
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+   var data = {{ rds| tojson | safe }};
+   var labels = Object.values(data).map(item => item.date);
+
+   // Extract stock data for each stock
+   var stock1Data = Object.values(data).map(item => item['Stock 1']);
+   var ctx = document.getElementById('retChart').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'bar',
+       data: {
+           labels: labels,
+           datasets: [
+               {
+                   label: 'Stock 1 Daily Returns',
+                   data: stock1Data,
+                   borderColor: 'rgba(255, 99, 132, 1)',
+                   borderWidth: 1,
+                   fill: false
+               }
+
+           ]
+       },
+       options: {
+           scales: {
+                x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+                 y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ rds| tojson | safe }};
+   var labels = Object.values(data).map(item => item.date);
+
+   // Extract stock data for each stock
+   var stock2Data = Object.values(data).map(item => item['Stock 2']);
+   var ctx = document.getElementById('retChart2').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'bar',
+       data: {
+           labels: labels,
+           datasets: [
+               {
+                   label: 'Stock 2 Daily Returns',
+                   data: stock2Data,
+                   borderColor: 'rgba(255, 99, 132, 1)',
+                   borderWidth: 1,
+                   fill: false
+               }
+
+           ]
+       },
+       options: {
+           scales: {
+                x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+                 y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ rds| tojson | safe }};
+   var labels = Object.values(data).map(item => item.date);
+
+   // Extract stock data for each stock
+   var stock3Data = Object.values(data).map(item => item['Stock 3']);
+   var ctx = document.getElementById('retChart3').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'bar',
+       data: {
+           labels: labels,
+           datasets: [
+               {
+                   label: 'Stock 3 Daily Returns',
+                   data: stock3Data,
+                   borderColor: 'rgba(255, 99, 132, 1)',
+                   borderWidth: 1,
+                   fill: false
+               }
+
+           ]
+       },
+       options: {
+           scales: {
+                x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+                 y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ rds| tojson | safe }};
+   var labels = Object.values(data).map(item => item.date);
+
+   // Extract stock data for each stock
+   var stock4Data = Object.values(data).map(item => item['Stock 4']);
+   var ctx = document.getElementById('retChart4').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'bar',
+       data: {
+           labels: labels,
+           datasets: [
+               {
+                   label: 'Stock 4 Daily Returns',
+                   data: stock4Data,
+                   borderColor: 'rgba(255, 99, 132, 1)',
+                   borderWidth: 1,
+                   fill: false
+               }
+
+           ]
+       },
+       options: {
+           scales: {
+                x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+                 y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ rds| tojson | safe }};
+   var labels = Object.values(data).map(item => item.date);
+
+   // Extract stock data for each stock
+   var stock5Data = Object.values(data).map(item => item['Stock 5']);
+   var ctx = document.getElementById('retChart5').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'bar',
+       data: {
+           labels: labels,
+           datasets: [
+               {
+                   label: 'Stock 5 Daily Returns',
+                   data: stock5Data,
+                   borderColor: 'rgba(255, 99, 132, 1)',
+                   borderWidth: 1,
+                   fill: false
+               }
+
+           ]
+       },
+       options: {
+           scales: {
+                x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+                 y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ pr| tojson | safe }};
+   var labels = Object.values(data).map(item => item.date);
+
+   // Extract stock data for each stock
+   var portfolio = Object.values(data).map(item => item['portfolio_returns']);
+   var ctx = document.getElementById('retChart6').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'bar',
+       data: {
+           labels: labels,
+           datasets: [
+               {
+                   label: 'Portfolio Daily Returns',
+                   data: portfolio,
+                   borderColor: 'orange',
+                   borderWidth: 1,
+                   fill: false
+               }
+
+           ]
+       },
+       options: {
+           scales: {
+                x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+                 y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   // Access the data passed from Flask
+   var data = {{ cr | tojson | safe }};
+
+   // Extract labels and values for Chart.js
+   var dates = Object.values(data).map(item => item.date);
+   var stock1Values = Object.values(data).map(item => item['Stock 1']);
+   var stock2Values = Object.values(data).map(item => item['Stock 2']);
+   var stock3Values = Object.values(data).map(item => item['Stock 3']);
+   var stock4Values = Object.values(data).map(item => item['Stock 4']);
+   var stock5Values = Object.values(data).map(item => item['Stock 5']);
+   var portfolioValues = Object.values(data).map(item => item.Portfolio);
+
+   // Create the Chart.js chart
+   var ctx = document.getElementById('cumChart').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'line',
+       data: {
+           labels: dates,
+           datasets: [
+               {
+                   label: 'Stock 1',
+                   data: stock1Values,
+                   borderColor: 'red',
+                   borderWidth: 1,
+                   fill: false
+               },
+               {
+                   label: 'Stock 2',
+                   data: stock2Values,
+                   borderColor: 'green',
+                   borderWidth: 1,
+                   fill: false
+               },
+               {
+                   label: 'Stock 3',
+                   data: stock3Values,
+                   borderColor: 'blue',
+                   borderWidth: 1,
+                   fill: false
+               },
+               {
+                   label: 'Stock 4',
+                   data: stock4Values,
+                   borderColor: 'purple',
+                   borderWidth: 1,
+                   fill: false
+               },
+               {
+                   label: 'Stock 5',
+                   data: stock5Values,
+                   borderColor: 'orange',
+                   borderWidth: 1,
+                   fill: false
+               },
+               {
+                   label: 'Portfolio',
+                   data: portfolioValues,
+                   borderColor: 'black',
+                   borderWidth: 2,
+                   fill: false
+               }
+           ]
+       },
+       options: {
+           scales: {
+               x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+               y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ rs1 | tojson | safe }};
+   var dates = Object.values(data).map(item => item['Date']);
+   var priceReturns = Object.values(data).map(item => item['DailyPriceReturn']);
+   var rollingStDev = Object.values(data).map(item => item['RollingStDev']);
+   var ctx = document.getElementById('rs1').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'line',
+       data: {
+           labels: dates,
+           datasets: [{
+               label: 'Price Returns',
+               data: priceReturns,
+               borderColor: 'blue',
+               borderWidth: 1,
+               fill: false
+           }, {
+               label: '-3 times Rolling StDev',
+               data: rollingStDev.map(val => val * -3),
+               borderColor: 'red',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }, {
+               label: '+3 times Rolling StDev',
+               data: rollingStDev.map(val => val * 3),
+               borderColor: 'green',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }]
+       },
+       options: {
+           scales: {
+               x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+               y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ rs2 | tojson | safe }};
+   var dates = Object.values(data).map(item => item['Date']);
+   var priceReturns = Object.values(data).map(item => item['DailyPriceReturn']);
+   var rollingStDev = Object.values(data).map(item => item['RollingStDev']);
+   var ctx = document.getElementById('rs2').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'line',
+       data: {
+           labels: dates,
+           datasets: [{
+               label: 'Price Returns',
+               data: priceReturns,
+               borderColor: 'blue',
+               borderWidth: 1,
+               fill: false
+           }, {
+               label: '-3 times Rolling StDev',
+               data: rollingStDev.map(val => val * -3),
+               borderColor: 'red',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }, {
+               label: '+3 times Rolling StDev',
+               data: rollingStDev.map(val => val * 3),
+               borderColor: 'green',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }]
+       },
+       options: {
+           scales: {
+               x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+               y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ rs3 | tojson | safe }};
+   var dates = Object.values(data).map(item => item['Date']);
+   var priceReturns = Object.values(data).map(item => item['DailyPriceReturn']);
+   var rollingStDev = Object.values(data).map(item => item['RollingStDev']);
+   var ctx = document.getElementById('rs3').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'line',
+       data: {
+           labels: dates,
+           datasets: [{
+               label: 'Price Returns',
+               data: priceReturns,
+               borderColor: 'blue',
+               borderWidth: 1,
+               fill: false
+           }, {
+               label: '-3 times Rolling StDev',
+               data: rollingStDev.map(val => val * -3),
+               borderColor: 'red',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }, {
+               label: '+3 times Rolling StDev',
+               data: rollingStDev.map(val => val * 3),
+               borderColor: 'green',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }]
+       },
+       options: {
+           scales: {
+               x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+               y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ rs4 | tojson | safe }};
+   var dates = Object.values(data).map(item => item['Date']);
+   var priceReturns = Object.values(data).map(item => item['DailyPriceReturn']);
+   var rollingStDev = Object.values(data).map(item => item['RollingStDev']);
+   var ctx = document.getElementById('rs4').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'line',
+       data: {
+           labels: dates,
+           datasets: [{
+               label: 'Price Returns',
+               data: priceReturns,
+               borderColor: 'blue',
+               borderWidth: 1,
+               fill: false
+           }, {
+               label: '-3 times Rolling StDev',
+               data: rollingStDev.map(val => val * -3),
+               borderColor: 'red',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }, {
+               label: '+3 times Rolling StDev',
+               data: rollingStDev.map(val => val * 3),
+               borderColor: 'green',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }]
+       },
+       options: {
+           scales: {
+               x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+               y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ rs5 | tojson | safe }};
+   var dates = Object.values(data).map(item => item['Date']);
+   var priceReturns = Object.values(data).map(item => item['DailyPriceReturn']);
+   var rollingStDev = Object.values(data).map(item => item['RollingStDev']);
+   var ctx = document.getElementById('rs5').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'line',
+       data: {
+           labels: dates,
+           datasets: [{
+               label: 'Price Returns',
+               data: priceReturns,
+               borderColor: 'blue',
+               borderWidth: 1,
+               fill: false
+           }, {
+               label: '-3 times Rolling StDev',
+               data: rollingStDev.map(val => val * -3),
+               borderColor: 'red',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }, {
+               label: '+3 times Rolling StDev',
+               data: rollingStDev.map(val => val * 3),
+               borderColor: 'green',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }]
+       },
+       options: {
+           scales: {
+               x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+               y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+<script>
+   var data = {{ rsp | tojson | safe }};
+   var dates = Object.values(data).map(item => item['Date']);
+   var priceReturns = Object.values(data).map(item => item['DailyPriceReturn']);
+   var rollingStDev = Object.values(data).map(item => item['RollingStDev']);
+   var ctx = document.getElementById('rsp').getContext('2d');
+   var myChart = new Chart(ctx, {
+       type: 'line',
+       data: {
+           labels: dates,
+           datasets: [{
+               label: 'Price Returns',
+               data: priceReturns,
+               borderColor: 'orange',
+               borderWidth: 1,
+               fill: false
+           }, {
+               label: '-3 times Rolling StDev',
+               data: rollingStDev.map(val => val * -3),
+               borderColor: 'yellow',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }, {
+               label: '+3 times Rolling StDev',
+               data: rollingStDev.map(val => val * 3),
+               borderColor: 'olive',
+               borderWidth: 1,
+               fill: false,
+               borderDash: [5, 5]
+           }]
+       },
+       options: {
+           scales: {
+               x: [{
+                   type: 'time',
+                   time: {
+                       unit: 'day'
+                   },
+                   ticks: {
+                       source: 'data'
+                   }
+               }],
+               y: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+</script>
+{% endblock javascripts %}

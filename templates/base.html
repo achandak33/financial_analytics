@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <meta name="google-signin-client_id" content="384697585082-kntjgh746jsfm3tj26n2ol27ev7vpp76.apps.googleusercontent.com">
+
+        <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/jquery.dataTables.min.css"
+      integrity="sha512-1k7mWiTNoyx2XtmI96o+hdjP8nn0f3Z2N4oF/9ZZRgijyV4omsKOXEnqL1gKQNPy2MTSP9rIEWGcH/CInulptA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    >
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/index.css') }}" >
+
+
+    {% block stylesheets %}
+        <!-- Specific Page CSS goes HERE -->
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/bootstrap.min.css') }}">
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/font-awesome.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename= 'css/range-slider.css') }}">
+    {% endblock stylesheets %}
+
+  </head>
+  <body class="app">
+      <div id="js-preloader" class="js-preloader">
+      <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+
+    <div id='loader'>
+      <div class="spinner"></div>
+    </div>
+
+    <script>
+      window.addEventListener('load', function load() {
+        const loader = document.getElementById('loader');
+        setTimeout(function() {
+          loader.classList.add('fadeOut');
+        }, 300);
+      });
+    </script>
+
+    <!-- @App Content -->
+    <!-- =================================================== -->
+    <div>
+        {% block sidebar %}
+        <div class="sidebar">
+        <div class="sidebar-inner">
+          <!-- ### $Sidebar Header ### -->
+          <div class="sidebar-logo">
+            <div class="peers ai-c fxw-nw">
+              <div class="peer peer-greed">
+                <a class="sidebar-link td-n" href="/index">
+                  <div class="peers ai-c fxw-nw">
+                    <div class="peer">
+                      <div class="logo">
+
+                      </div>
+                    </div>
+                    <div class="peer peer-greed">
+                      <h5 class="lh-1 mB-0 logo-text">FINANCIAL ANALYTICS</h5>
+
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="peer">
+                <div class="mobile-toggle sidebar-toggle">
+                  <a href="" class="td-n">
+                    <i class="ti-arrow-circle-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ### $Sidebar Menu ### -->
+          <ul class="sidebar-menu scrollable pos-r">
+            <li class="nav-item mT-30 actived">
+              <a class="sidebar-link" href="/index">
+                <span class="icon-holder">
+                  <i class="c-blue-500 ti-home"></i>
+                </span>
+                <span class="title">Home</span>
+              </a>
+            </li>
+
+
+
+
+          </ul>
+
+        </div>
+      </div>
+        {% endblock sidebar %}
+
+
+      <!-- #Main ============================ -->
+      <div class="page-container">
+{% block nav_head %}
+        <div class="header navbar">
+    <div class="header-container">
+      <ul class="nav-left">
+        <li>
+          <a id='sidebar-toggle' class="sidebar-toggle" href="javascript:void(0);">
+            <i class="ti-menu"></i>
+          </a>
+        </li>
+        <li class="search-box">
+          <a class="search-toggle no-pdd-right" href="javascript:void(0);">
+            <i class="search-icon ti-search pdd-right-10"></i>
+            <i class="search-icon-close ti-close pdd-right-10"></i>
+          </a>
+        </li>
+        <li class="search-input">
+          <input class="form-control" type="text" placeholder="Search...">
+        </li>
+      </ul>
+
+
+    </div>
+  </div>
+{% endblock nav_head%}
+        {% block content %}{% endblock content %}
+
+        {% include 'footer.html' %}
+
+      </div>
+
+    </div>
+
+    {% include 'scripts.html' %}
+
+    <!-- Specific Page JS goes HERE -->
+    {% block javascripts %}
+
+      <!-- jQuery -->
+    <script src="{{ url_for('static', filename= 'js/jquery-2.1.0.min.js') }}"></script>
+    <!-- Bootstrap -->
+    <script src="{{ url_for('static', filename= 'js/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename= 'js/bootstrap.min.js') }}"></script>
+    <!-- Plugins -->
+    <script src="{{ url_for('static', filename= 'js/scrollreveal.min.js') }}static/"></script>
+    <script src="{{ url_for('static', filename= 'js/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename= 'js/jquery.counterup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename= 'js/imgfix.min.js') }}"></script>
+    <script src="{{ url_for('static', filename= 'js/mixitup.js') }}"></script>
+    <script src="{{ url_for('static', filename= 'js/accordions.js') }}"></script>
+    <!-- Global Init -->
+    <script src="{{ url_for('static', filename= 'js/custom.js') }}"></script>
+    <script src="{{ url_for('static', filename= 'js/sandbox.js') }}js/"></script>
+  {% endblock javascripts %}
+
+</body>
+</html>
+

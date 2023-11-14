@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <style>
+
+        #overlay-container {
+            position: relative;
+        }
+
+        #overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: black; /* Change text color as needed */
+            font-size: 24px; /* Adjust font size as needed */
+            text-align: center;
+        }
+    </style>
+<!-- Removing navigation from base -->
+
+    <!-- ***** Header Area Start ***** -->
+<!-- -->
+<div class="header navbar">
+    <div class="header-container">
+      <ul class="nav-right">
+       <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+        <li class="scroll-to-section"><a href="/dashboard" class="active">Reporting Dashboard</a></li>
+      </ul>
+
+    </div>
+  </div>
+<!--dad-->
+
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Main Banner Area Start ***** -->
+<div id="overlay-container">
+    <img src="{{ url_for('static', filename= 'images/home1.png') }}" alt="Homepage Image" style="width: 100%; height: auto;">
+
+    <div id="overlay-text">
+        <div class="caption">
+                <h3 style="color: black;">Financial Analytics</h3>
+				<h6>Data Exploration Toolkit</h6>
+                <div class="main-button scroll-to-section">
+
+                </div>
+            </div>
+    </div>
+</div>
+
+
+    <!-- ***** Main Banner Area End ***** -->
+    
+{% endblock content %}
+{% block nav_head %}
+{% endblock %}
+{% block sidebar %}
+{% endblock %}
